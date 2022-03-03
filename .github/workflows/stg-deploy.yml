@@ -59,3 +59,25 @@ jobs:
         if: ${{ needs.build.result == 'success' }}
         run: |
           aws ecs describe-task-definition --task-definition referral-stg --query taskDefinition > task-definition.json
+
+      - name: Set target image
+        id: set-target-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: referral
+          STAGE: stg
+        run: |
+          echo "::set-output name=image::$ECR_REGISTRY/$STAGE/$ECR_REPOSITORY:latest"
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        if: ${{ needs.build.result == 'success' }}
+        id: task-def
+        uses: payhereinc/amazon-ecs-render-task-definition@master
+        with:
+          task-definition: task-definition.json
+          container-name: referral-stg
+          image: ${{ steps.set-target-image.outputs.image }}
+          docker-labels: |
+            com.datadoghq.tags.service=referral
+            com.datadoghq.tags.version=${{ github.sha }}
+            com.datadoghq.tags.env=stg
