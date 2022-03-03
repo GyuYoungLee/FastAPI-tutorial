@@ -25,11 +25,11 @@ jobs:
       - name: Push to ECR
         id: push-ecr
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          STAGE: stg
           ECR_REPOSITORY: referral
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
           COMMIT_REF: ${{ github.sha }}
-          STAGE: stg
         run: |
           docker build \
           --build-arg ENVIRONMENT=$STAGE \
@@ -57,15 +57,18 @@ jobs:
 
       - name: Download task definition
         if: ${{ needs.build.result == 'success' }}
+        env:
+          STAGE: stg
+          ECR_REPOSITORY: referral
         run: |
-          aws ecs describe-task-definition --task-definition referral-stg --query taskDefinition > task-definition.json
+          aws ecs describe-task-definition --task-definition $ECR_REPOSITORY-$STAGE --query taskDefinition > task-definition.json
 
       - name: Set target image
         id: set-target-image
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: referral
           STAGE: stg
+          ECR_REPOSITORY: referral
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           echo "::set-output name=image::$ECR_REGISTRY/$STAGE/$ECR_REPOSITORY:latest"
 
@@ -81,3 +84,13 @@ jobs:
             com.datadoghq.tags.service=referral
             com.datadoghq.tags.version=${{ github.sha }}
             com.datadoghq.tags.env=stg
+
+      - name: Deploy Amazon ECS task definition
+        if: ${{ needs.build.result == 'success' }}
+        id: deploy-ecs
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: referral-stg
+          cluster: stg-payhere
+          wait-for-service-stability: true
