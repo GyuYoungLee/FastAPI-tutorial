@@ -38,3 +38,24 @@ jobs:
           docker push $ECR_REGISTRY/$STAGE/$ECR_REPOSITORY:$IMAGE_TAG
           docker tag $ECR_REGISTRY/$STAGE/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$STAGE/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$STAGE/$ECR_REPOSITORY:latest
+
+  deploy-ecs:
+    needs: [build]
+    environment: stg
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Download task definition
+        if: ${{ needs.build.result == 'success' }}
+        run: |
+          aws ecs describe-task-definition --task-definition referral-stg --query taskDefinition > task-definition.json
