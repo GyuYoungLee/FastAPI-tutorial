@@ -21,3 +21,20 @@ jobs:
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Push to ECR
+        id: push-ecr
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: coworker
+          IMAGE_TAG: ${{ github.sha }}
+          COMMIT_REF: ${{ github.sha }}
+          STAGE: stg
+        run: |
+          docker build \
+          --build-arg ENVIRONMENT=$STAGE \
+          --build-arg COMMIT_REF=$COMMIT_REF \
+          -t $ECR_REGISTRY/$STAGE/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$STAGE/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REGISTRY/$STAGE/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$STAGE/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$STAGE/$ECR_REPOSITORY:latest
