@@ -8,11 +8,13 @@ from fastapi import FastAPI, Cookie, Header
 app = FastAPI()
 
 
+# 쿠기: name
 @app.get("/cookie")
 def get_cookies(name: str = Cookie(None)):
     return {"name": name}
 
 
+# 헤더: X-Token
 @app.get("/header")
-def get_headers(x_token: str = Header(None, title="토큰")):
+def get_headers(x_token: str = Header(None)):
     return {"X-Token": x_token}

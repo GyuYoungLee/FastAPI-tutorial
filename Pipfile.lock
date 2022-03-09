@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "facdd409da690ea6ce662786e476c2faf2f1642b255ef334af724ddae572079b"
+            "sha256": "8dd39fcad1f799730a510d1dd17e5e2f84167c7bde8194196393e4654e4e88ac"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -138,11 +138,11 @@
         },
         "dnspython": {
             "hashes": [
-                "sha256:081649da27ced5e75709a1ee542136eaba9842a0fe4c03da4fb0a3d3ed1f3c44",
-                "sha256:e79351e032d0b606b98d38a4b0e6e2275b31a5b85c873e587cc11b73aca026d6"
+                "sha256:0f7569a4a6ff151958b64304071d370daa3243d15941a7beedf0c9fe5105603e",
+                "sha256:a851e51367fb93e9e1361732c1d60dab63eff98712e503ea7d92e6eccb109b4f"
             ],
             "markers": "python_version >= '3.6' and python_version < '4.0'",
-            "version": "==2.2.0"
+            "version": "==2.2.1"
         },
         "ecdsa": {
             "hashes": [
@@ -161,11 +161,11 @@
         },
         "fastapi": {
             "hashes": [
-                "sha256:b58a2c46df14f62ebe6f24a9439927539ba1959b9be55ba0e2f516a683e5b9d4",
-                "sha256:b8ec8400623ef0b2ff558ebe06753b349f8e3a5dd38afea650800f2644ddba34"
+                "sha256:124774ce4cb3322841965f559669b233a0b8d343ea24fdd8b293253c077220d7",
+                "sha256:43d12891b78fc497a50623e9c7c24640c569489f060acd9ce2c4902080487a93"
             ],
             "index": "pypi",
-            "version": "==0.74.1"
+            "version": "==0.75.0"
         },
         "h11": {
             "hashes": [

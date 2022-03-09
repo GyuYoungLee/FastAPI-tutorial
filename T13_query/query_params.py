@@ -17,5 +17,5 @@ class UserLevel(str, Enum):
 
 # 쿼리 파라미터: age, grade
 @app.get("/users")
-def get_users(age: int, grade: UserLevel = UserLevel.a):  # 추가: UserLevel 기본값
+def get_users(age: int, grade: UserLevel = UserLevel.a):
     return {"age": age, "grade": grade}
