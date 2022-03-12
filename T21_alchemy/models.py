@@ -1,12 +1,11 @@
-from sqlalchemy import Column, Boolean, Integer, String
+from sqlalchemy import Column, String, Integer
 
-from .databases import Base
+from T21_alchemy.databases import Base
 
 
 class User(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True)
-    email = Column(String(255), unique=True, index=True)
-    password = Column(String(255))
-    is_active = Column(Boolean, default=True)
+    name = Column(String(255), index=True)
+    age = Column(Integer)

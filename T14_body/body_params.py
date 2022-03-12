@@ -8,7 +8,7 @@ from pydantic import BaseModel
 app = FastAPI()
 
 
-# 바디 파라미터: name, age
+# body 파라미터: name, age
 
 class User(BaseModel):
     name: str
