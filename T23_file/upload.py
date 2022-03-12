@@ -1,5 +1,5 @@
 """
-http -v -f POST :8000/upload file@images/apple.jpeg
+http -v -f POST :8000/upload file@backup/apple.jpeg
 """
 
 from tempfile import NamedTemporaryFile
