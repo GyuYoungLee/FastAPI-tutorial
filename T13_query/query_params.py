@@ -1,21 +1,18 @@
 """
-http ':8000/users?age=10&grade=a'
+http ':8000/users/gy?age=10'
 """
-
-from enum import Enum
 
 from fastapi import FastAPI
 
 app = FastAPI()
 
 
-class UserLevel(str, Enum):
-    a = "a"
-    b = "b"
-    c = "c"
+# path 파라미터: name
+# query 파라미터: age
 
-
-# 쿼리 파라미터: age, grade
-@app.get("/users")
-def get_users(age: int, grade: UserLevel = UserLevel.a):
-    return {"age": age, "grade": grade}
+@app.get("/users/{name}")
+def get_users(name: str, age: int):
+    return {
+        "name": name,
+        "age": age,
+    }
