@@ -1,5 +1,5 @@
 """
-http -v :8000/error
+http :8000/error
 """
 
 from fastapi import FastAPI, HTTPException, status

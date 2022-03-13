@@ -10,8 +10,8 @@ app = FastAPI()
 
 
 class SomeError(HTTPException):
-    def __init__(self, name: str, code: int, status_code: int, detail: Any = None,
-                 headers: Optional[Dict[str, Any]] = None) -> None:
+    def __init__(self, name: str, code: int,
+                 status_code: int, detail: Any = None, headers: Optional[Dict[str, Any]] = None) -> None:
         result = {
             "name": name,
             "code": code,
