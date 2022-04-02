@@ -1,6 +1,6 @@
 """
-http -v :8000/cookie Cookie:name=gy
-http -v :8000/header X-Token:abc123
+http -v :8000/cookie 'Cookie:name=gy;age=10'
+http -v :8000/header X-Name:gy X-Age:10
 """
 
 from fastapi import FastAPI, Cookie, Header
@@ -12,11 +12,15 @@ app = FastAPI()
 
 @app.get("/cookie")
 def get_cookies(name: str = Cookie(None)):
-    return {"name": name}
+    return {
+        "name": name
+    }
 
 
 # 헤더: X-Token
 
 @app.get("/header")
-def get_headers(x_token: str = Header(None)):
-    return {"X-Token": x_token}
+def get_headers(x_name: str = Header(None)):
+    return {
+        "X-Name": x_name
+    }

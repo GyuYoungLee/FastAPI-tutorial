@@ -1,11 +1,11 @@
 from sqlalchemy import Column, String, Integer
 
-from T21_alchemy.databases import Base
+from .databases import Base
 
 
 class User(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(255), index=True)
+    name = Column(String(255))
     age = Column(Integer)
