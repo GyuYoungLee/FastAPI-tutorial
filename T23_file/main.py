@@ -1,5 +1,5 @@
 """
-http -v -f POST :8000/upload file@backup/apple.jpeg
+http -v -f POST :8000/upload file@9-backup/apple.jpeg
 """
 
 from tempfile import NamedTemporaryFile
@@ -18,5 +18,7 @@ async def save_file(file: IO):
 
 @app.post("/upload")
 async def upload(file: UploadFile = File(...)):
-    path = await save_file(file.file)
-    return {"filepath": path}
+    path = await save_file(file.file)  # file.file
+    return {
+        "upload_path": path
+    }
