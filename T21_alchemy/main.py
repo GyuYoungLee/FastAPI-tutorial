@@ -33,11 +33,10 @@ def create_user(body: UserRequest):
     db.add(user)
     db.commit()
 
-    db.refresh(user)
-    return user  # alchemy instance
+    return user  # sqlalchemy instance
 
 
 @app.get("/users", response_model=list[UserResponse])
 def get_users():
     db = SessionLocal()
-    return db.query(User).all()  # alchemy instance
+    return db.query(User).all()  # sqlalchemy instance
