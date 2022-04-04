@@ -13,7 +13,7 @@ class TutorialError(Exception):
         self.type = type
         self.message = message
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"<{self.type}> error is occurred. code: {self.code}, message: {self.message}"
 
 

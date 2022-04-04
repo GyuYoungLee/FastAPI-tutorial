@@ -11,12 +11,12 @@ from .handlers import ErrorHandler
 
 app = FastAPI(default_response_class=DefaultORJSONResponse)
 
-app.add_exception_handler(RequestValidationError, ErrorHandler.http422_error_handler)
-app.add_exception_handler(HTTPException, ErrorHandler.http_error_handler)
+app.add_exception_handler(RequestValidationError, handler=ErrorHandler.http422_error_handler)
+app.add_exception_handler(HTTPException, handler=ErrorHandler.http_error_handler)
 
 
 @app.get("/hello/{name}")
-def hello(name: str = Path(..., max_length=2)):
+def hello(name: str = Path(..., max_length=2)) -> dict:
     return {
         "message": f"hello {name}"
     }
@@ -24,5 +24,5 @@ def hello(name: str = Path(..., max_length=2)):
 
 # HTTPException 이용 raise
 @app.get("/error")
-async def make_error():
+async def make_error() -> None:
     raise HTTPException(status_code=404, detail={"code": "00001", "type": "greeting", "message": "hi"})

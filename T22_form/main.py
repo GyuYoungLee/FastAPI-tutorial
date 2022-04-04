@@ -11,7 +11,7 @@ app = FastAPI()
 # Content 타입 (= Mime 타입, Media 타입): application/x-www-urlencoded
 
 @app.post("/form")
-def create_user(name: str = Form(...), age: int = Form(...)):
+def create_user(name: str = Form(...), age: int = Form(...)) -> dict:
     return {
         "name": name,
         "age": age,
@@ -21,7 +21,7 @@ def create_user(name: str = Form(...), age: int = Form(...)):
 # Content 타입 (= Mime 타입, Media 타입): multipart/form-data
 
 @app.post("/file")
-def create_user(name: str = Form(...), age: int = Form(...), file: UploadFile = File(...)):
+def create_user(name: str = Form(...), age: int = Form(...), file: UploadFile = File(...)) -> dict:
     return {
         "name": name,
         "age": age,

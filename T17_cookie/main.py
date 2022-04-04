@@ -11,7 +11,7 @@ app = FastAPI()
 # 쿠기: name
 
 @app.get("/cookie")
-def get_cookies(name: str = Cookie(None)):
+def get_cookies(name: str = Cookie(None)) -> dict:
     return {
         "name": name
     }
@@ -20,7 +20,7 @@ def get_cookies(name: str = Cookie(None)):
 # 헤더: X-Token
 
 @app.get("/header")
-def get_headers(x_name: str = Header(None)):
+def get_headers(x_name: str = Header(None)) -> dict:
     return {
         "X-Name": x_name
     }

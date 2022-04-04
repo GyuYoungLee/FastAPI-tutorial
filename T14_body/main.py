@@ -16,7 +16,7 @@ class User(BaseModel):
 
 
 @app.post("/users")
-def create_user(user: User):
+def create_user(user: User) -> dict:
     return {
         "name": user.name,
         "age": user.age,

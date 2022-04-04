@@ -1,29 +1,51 @@
-from typing import Any
+from fastapi import FastAPI, Depends, Header, HTTPException
+from pydantic import BaseModel
 
-import orjson
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-
-
-class DefaultORJSONResponse(JSONResponse):
-    def render(self, content: Any) -> bytes:
-        assert orjson is not None, "orjson must be installed to use ORJSONResponse"
-        return orjson.dumps(self.formatter(content))
-
-    def formatter(self, content: Any):
-        return {
-            "data": content,
-            "meta": {
-                "code": self.status_code
-            }
-        }
+app = FastAPI()
 
 
-app = FastAPI(default_response_class=DefaultORJSONResponse)
+def verify_token(x_token: str = Header(None)) -> None:
+    if not x_token:
+        raise HTTPException(status_code=401, detail="Not authorized")
 
 
-@app.get("/")
+@app.get("/hello", dependencies=[Depends(verify_token)])
 def hello():
-    return {
-        "message": "hello"
-    }
+    return {"message": "Hello"}
+
+
+class Params(BaseModel):
+    a: int
+    b: int
+
+
+def func_params(params: Params) -> int:
+    return params.a + params.b
+
+
+@app.post("/func")
+def sum_func(result: int = Depends(func_params)):
+    return {"result": result}
+
+
+class ClassParams:
+    def __init__(self, params: Params) -> None:
+        self.result = params.a + params.b
+
+
+@app.post("/class")
+def sum_class(params: ClassParams = Depends(ClassParams)):
+    return {"result": params.result}
+
+
+class PydanticParams(BaseModel):
+    params: Params
+
+    @property
+    def result(self) -> int:
+        return self.params.a + self.params.b
+
+
+@app.post("/pydantic")
+def sum_pydantic(params: PydanticParams = Depends()):
+    return {"result": params.result}

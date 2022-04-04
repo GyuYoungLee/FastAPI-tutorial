@@ -8,6 +8,7 @@ from pydantic import BaseModel
 
 from .databases import engine, SessionLocal
 from .models import Base, User
+from sqlalchemy.orm import Session
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
@@ -27,16 +28,16 @@ class UserResponse(BaseModel):
 
 
 @app.post("/users", response_model=UserResponse)
-def create_user(body: UserRequest):
-    db = SessionLocal()
+def create_user(body: UserRequest) -> User:
+    db: Session = SessionLocal()
     user = User(name=body.name, age=body.age)
-    db.add(user)
+    db.add(User)
     db.commit()
 
     return user  # sqlalchemy instance
 
 
 @app.get("/users", response_model=list[UserResponse])
-def get_users():
-    db = SessionLocal()
+def get_users() -> list[User]:
+    db: Session = SessionLocal()
     return db.query(User).all()  # sqlalchemy instance
