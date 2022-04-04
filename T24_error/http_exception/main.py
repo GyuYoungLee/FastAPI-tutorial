@@ -6,8 +6,8 @@ http :8000/error
 
 from fastapi import FastAPI, HTTPException, Path
 from fastapi.exceptions import RequestValidationError
-from .utils import DefaultORJSONResponse
-from .utils import ErrorHandler
+from .response import DefaultORJSONResponse
+from .handlers import ErrorHandler
 
 app = FastAPI(default_response_class=DefaultORJSONResponse)
 
@@ -22,7 +22,7 @@ def hello(name: str = Path(..., max_length=2)):
     }
 
 
-# HTTPException 이용
+# HTTPException 이용 raise
 @app.get("/error")
 async def make_error():
     raise HTTPException(status_code=404, detail={"code": "00001", "type": "greeting", "message": "hi"})
