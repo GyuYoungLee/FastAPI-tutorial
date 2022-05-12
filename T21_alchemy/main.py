@@ -34,6 +34,7 @@ def create_user(body: UserRequest) -> User:
     db.add(User)
     db.commit()
 
+    db.refresh(user)
     return user  # sqlalchemy instance
 
 

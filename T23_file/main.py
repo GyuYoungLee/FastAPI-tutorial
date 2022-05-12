@@ -1,11 +1,11 @@
 """
-http -v -f POST :8000/file/store file@9-backup/apple.jpeg
+http -v -f POST :8000/file name=gy file@9-backup/apple.jpeg
 """
 
 from tempfile import NamedTemporaryFile
 from typing import IO
 
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, Form, File, UploadFile
 
 app = FastAPI()
 
@@ -16,11 +16,14 @@ async def save_file(file: IO) -> str:
         return temp_file.name
 
 
-@app.post("/file/store")
-async def upload_file(file: UploadFile = File(...)) -> dict:
-    stored_path = await save_file(file=file.file)  # file: 비동기, file.file: 동기
+@app.post("/file")
+async def create_user(name: str = Form(...), file: UploadFile = File(...)) -> dict:
+    stored_path = await save_file(file=file.file)
     return {
-        "filename": file.filename,
-        "content": file.content_type,
-        "stored_path": stored_path
+        "name": name,
+        "file": {
+            "filename": file.filename,
+            "content": file.content_type,
+            "stored_path": stored_path,
+        }
     }

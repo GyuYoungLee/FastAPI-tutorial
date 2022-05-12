@@ -11,7 +11,7 @@ app = FastAPI()
 # query 파라미터: age
 
 @app.get("/users/{name}")
-def get_users(name: str, age: int) -> dict:
+def get_user(name: str, age: int) -> dict:
     return {
         "name": name,
         "age": age,
