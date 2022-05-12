@@ -1,5 +1,5 @@
 """
-http POST :8000/send-notification/gylee
+http POST :8000/send/gylee
 """
 
 import pathlib
@@ -19,7 +19,7 @@ def write_log(message: str):
         log.write(message)
 
 
-@app.post("/send-notification/{email}", status_code=status.HTTP_202_ACCEPTED)
+@app.post("/send/{email}", status_code=status.HTTP_202_ACCEPTED)
 async def send_notification(email: str, background_tasks: BackgroundTasks):
     message = f"Notification to {email}\n"
     background_tasks.add_task(write_log, message)

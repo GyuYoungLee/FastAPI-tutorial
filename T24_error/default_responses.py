@@ -1,7 +1,7 @@
 import json
 from typing import Any
 
-from fastapi import Request, status
+from fastapi import Request, status, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel
@@ -44,6 +44,16 @@ def http422_error_handler(_: Request, e: RequestValidationError) -> ErrorJsonRes
         "code": "0" * 5,
         "type": e.errors()[0].get("type"),
         "message": e.errors()[0].get("msg")
+    }
+    return ErrorJsonResponse(status_code=status_code, content=content)
+
+
+# http exception
+def http_exception_handler(_: Request, e: HTTPException) -> ErrorJsonResponse:
+    status_code = e.status_code
+    content = {
+        "code": "0" * 5,
+        "message": e.detail
     }
     return ErrorJsonResponse(status_code=status_code, content=content)
 

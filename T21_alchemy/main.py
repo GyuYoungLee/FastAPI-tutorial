@@ -6,9 +6,10 @@ http POST :8000/users name=gy age=10
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from sqlalchemy.orm import Session
+
 from .databases import engine, SessionLocal
 from .models import Base, User
-from sqlalchemy.orm import Session
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
