@@ -10,10 +10,8 @@ sqlalchemy = "==1.4.36"
 pymysql = "==1.0.2"
 cryptography = "==37.0.2"
 python-multipart = "==0.0.5"
-orjson = "==3.6.7"
-bcrypt = "==3.2.0"
+bcrypt = "==3.2.2"
 python-jose = "==3.3.0"
-pyjwt = "==2.3.0"
 
 [dev-packages]
 

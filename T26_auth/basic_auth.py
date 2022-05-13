@@ -7,10 +7,11 @@ from fastapi import FastAPI, Depends
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 app = FastAPI()
+
 security = HTTPBasic()
 
 
 @app.get("/users/me")
-def get_current_user(cred: HTTPBasicCredentials = Depends(security)):
+def get_current_user(cred: HTTPBasicCredentials = Depends(security)) -> dict:
     # DB 데이타 조회
     return {"username": cred.username, "password": cred.password}
